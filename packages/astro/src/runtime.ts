@@ -165,6 +165,7 @@ async function load(config: RuntimeConfig, rawPathname: string | undefined): Pro
       children: [],
       props: pageProps,
       css: Array.isArray(mod.css) ? mod.css : typeof mod.css === 'string' ? [mod.css] : [],
+      scripts: mod.exports.default[Symbol.for('astro.hoistedScripts')]
     })) as string;
 
     return {

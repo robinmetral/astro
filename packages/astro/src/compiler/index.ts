@@ -153,6 +153,9 @@ ${result.getStaticPaths || ''}
 
 // \`__render()\`: Render the contents of the Astro module.
 import { h, Fragment } from 'astro/dist/internal/h.js';
+import { __astro_hoisted_scripts } from 'astro/dist/internal/__astro_hoisted_scripts.js';
+
+const __astroScripts = __astro_hoisted_scripts([${result.components.map(n => n)}], ${JSON.stringify(result.scripts)});
 const __astroInternal = Symbol('astro.internal');
 const __astroContext = Symbol.for('astro.context');
 async function __render(props, ...children) {
@@ -163,6 +166,10 @@ async function __render(props, ...children) {
     },
     pageCSS: {
       value: (props[__astroContext] && props[__astroContext].pageCSS) || [],
+      enumerable: true
+    },
+    pageScripts: {
+      value: (props[__astroContext] && props[__astroContext].pageScripts) || [],
       enumerable: true
     },
     isPage: {
@@ -182,11 +189,11 @@ async function __render(props, ...children) {
   ${result.script}
   return h(Fragment, null, ${result.html});
 }
-export default { isAstroComponent: true, __render };
+export default { isAstroComponent: true, __render, [Symbol.for('astro.hoistedScripts')]: __astroScripts };
 
 // \`__renderPage()\`: Render the contents of the Astro module as a page. This is a special flow,
 // triggered by loading a component directly by URL.
-export async function __renderPage({request, children, props, css}) {
+export async function __renderPage({request, children, props, css, scripts}) {
   const currentChild = {
     isAstroComponent: true,
     layout: typeof __layout === 'undefined' ? undefined : __layout,
@@ -203,6 +210,7 @@ export async function __renderPage({request, children, props, css}) {
         request,
         resolve: __TopLevelAstro.resolve,
         createAstroRootUID(seed) { return seed + astroRootUIDCounter++; },
+        pageScripts: scripts,
       },
       writable: false,
       enumerable: false
@@ -232,7 +240,6 @@ export async function __renderPage({request, children, props, css}) {
 };
 
 ${result.exports.join('\n')}
-
 `;
 
   return {

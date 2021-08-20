@@ -67,12 +67,19 @@ export interface JsxItem {
   jsx: string;
 }
 
+export interface ScriptInfo {
+  src?: string;
+  content?: string;
+}
+
 export interface TransformResult {
   script: string;
   imports: string[];
   exports: string[];
+  components: string[];
   html: string;
   css?: string;
+  scripts: ScriptInfo[];
   getStaticPaths?: string;
   hasCustomElements: boolean;
   customElementCandidates: Map<string, string>;
@@ -103,6 +110,8 @@ export interface BuildFile {
   contentType: string;
   /** Encoding */
   encoding?: 'utf8';
+  /** Extracted scripts */
+  hoistedScripts?: ScriptInfo[];
 }
 
 /** Mapping of every URL and its required assets. All URLs are absolute relative to the project. */
@@ -117,6 +126,8 @@ export interface PageDependencies {
   css: Set<string>;
   /** Images needed for page. Can be loaded via CSS, <link>, or otherwise. */
   images: Set<string>;
+  /** Async hoisted Javascript */
+  hoistedJS: Map<string, ScriptInfo>;
 }
 
 export type PaginateFunction<T = any> = (data: T[], args?: { pageSize?: number }) => PaginatedCollectionResult<T>;
