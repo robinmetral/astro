@@ -1,7 +1,6 @@
 import type { ImportSpecifier, ImportDefaultSpecifier, ImportNamespaceSpecifier } from '@babel/types';
-import type { AstroMarkdownOptions } from '@astrojs/markdown-support';
+import type { AstroUserConfig } from '../config';
 import type { AstroConfig } from './config';
-
 export interface RouteData {
   type: 'page';
   pattern: RegExp;
@@ -14,28 +13,8 @@ export interface RouteData {
 export interface ManifestData {
   routes: RouteData[];
 }
-export interface AstroConfigRaw {
-  dist: string;
-  projectRoot: string;
-  src: string;
-  pages: string;
-  public: string;
-  jsx?: string;
-}
 
-export { AstroMarkdownOptions, AstroConfig };
-
-export type AstroUserConfig = Omit<AstroConfig, 'buildOptions' | 'devOptions'> & {
-  buildOptions: {
-    sitemap: boolean;
-  };
-  devOptions: {
-    hostname?: string;
-    port?: number;
-    projectRoot?: string;
-    tailwindConfig?: string;
-  };
-};
+export { AstroConfig, AstroUserConfig };
 
 export interface JsxItem {
   name: string;

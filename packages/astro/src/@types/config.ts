@@ -9,7 +9,7 @@ export interface AstroConfig {
    * Path to the `astro build` output.
    * Default: './dist'
    */
-  dist: string;
+  dist: URL;
   /**
    * Path to all of your Astro components, pages, and data.
    * Default: './src'
@@ -37,7 +37,7 @@ export interface AstroConfig {
    *  '@astrojs/renderer-preact',
    * ],
    */
-  renderers?: string[];
+  renderers: string[];
   /** Options for rendering markdown content */
   markdownOptions?: Partial<AstroMarkdownOptions>;
   /** Options specific to `astro build` */
@@ -58,7 +58,7 @@ export interface AstroConfig {
   };
   /** Options for the development server run with `astro dev`. */
   devOptions: {
-    hostname?: string;
+    hostname: string;
     /** The port to run the dev server on. */
     port: number;
     /** Path to tailwind.config.js, if used */
